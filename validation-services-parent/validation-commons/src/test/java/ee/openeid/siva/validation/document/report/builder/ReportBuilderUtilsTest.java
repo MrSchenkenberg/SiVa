@@ -19,8 +19,8 @@ package ee.openeid.siva.validation.document.report.builder;
 import ee.openeid.siva.validation.document.report.Error;
 import ee.openeid.siva.validation.document.report.*;
 import eu.europa.esig.dss.enumerations.SignatureQualification;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Modifier;
@@ -79,25 +79,25 @@ public class ReportBuilderUtilsTest {
     public void indicationToPassedWithWarningFailedAdesigQsSignatureLevel() {
         ValidationConclusion validationConclusion = getDefaultValidationConclusion(SignatureQualification.ADESIG_QC);
         ReportBuilderUtils.processSignatureIndications(validationConclusion, QES_POLICY);
-        Assert.assertEquals("TOTAL-PASSED", validationConclusion.getSignatures().get(0).getIndication());
-        Assert.assertEquals(1, validationConclusion.getSignatures().get(0).getWarnings().size());
-        Assert.assertTrue(validationConclusion.getSignatures().get(0).getErrors().isEmpty());
-        Assert.assertEquals("The signature is not in the Qualified Electronic Signature level", validationConclusion.getSignatures().get(0).getWarnings().get(0).getContent());
+        Assertions.assertEquals("TOTAL-PASSED", validationConclusion.getSignatures().get(0).getIndication());
+        Assertions.assertEquals(1, validationConclusion.getSignatures().get(0).getWarnings().size());
+        Assertions.assertTrue(validationConclusion.getSignatures().get(0).getErrors().isEmpty());
+        Assertions.assertEquals("The signature is not in the Qualified Electronic Signature level", validationConclusion.getSignatures().get(0).getWarnings().get(0).getContent());
     }
 
     private void assertTotalPassed(ValidationConclusion validationConclusion) {
         SignatureValidationData signatureValidationData = validationConclusion.getSignatures().get(0);
-        Assert.assertEquals("TOTAL-PASSED", signatureValidationData.getIndication());
-        Assert.assertTrue(signatureValidationData.getWarnings().isEmpty());
-        Assert.assertTrue(signatureValidationData.getErrors().isEmpty());
+        Assertions.assertEquals("TOTAL-PASSED", signatureValidationData.getIndication());
+        Assertions.assertTrue(signatureValidationData.getWarnings().isEmpty());
+        Assertions.assertTrue(signatureValidationData.getErrors().isEmpty());
     }
 
     private void assertTotalFailed(ValidationConclusion validationConclusion) {
-        Assert.assertEquals("TOTAL-FAILED", validationConclusion.getSignatures().get(0).getIndication());
-        Assert.assertTrue(validationConclusion.getSignatures().get(0).getWarnings().isEmpty());
+        Assertions.assertEquals("TOTAL-FAILED", validationConclusion.getSignatures().get(0).getIndication());
+        Assertions.assertTrue(validationConclusion.getSignatures().get(0).getWarnings().isEmpty());
         List<Error> errors = validationConclusion.getSignatures().get(0).getErrors();
-        Assert.assertEquals(1, errors.size());
-        Assert.assertEquals("Signature/seal level do not meet the minimal level required by applied policy", errors.get(0).getContent());
+        Assertions.assertEquals(1, errors.size());
+        Assertions.assertEquals("Signature/seal level do not meet the minimal level required by applied policy", errors.get(0).getContent());
     }
 
     private ValidationConclusion getDefaultValidationConclusion(SignatureQualification signatureQualification) {
@@ -144,17 +144,17 @@ public class ReportBuilderUtilsTest {
     public void validValidatedDocumentReturned() {
         byte[] data = "testData".getBytes();
         ValidatedDocument response = ReportBuilderUtils.createValidatedDocument(true, "filename.asice", data);
-        Assert.assertEquals("filename.asice", response.getFilename());
-        Assert.assertEquals("SHA256", response.getHashAlgo());
-        Assert.assertEquals("ukd6CsV+EN2Qu1vwKJxZkP6DnGGbJv3nwqrGL1JtQRM=", response.getFileHash());
+        Assertions.assertEquals("filename.asice", response.getFilename());
+        Assertions.assertEquals("SHA256", response.getHashAlgo());
+        Assertions.assertEquals("ukd6CsV+EN2Qu1vwKJxZkP6DnGGbJv3nwqrGL1JtQRM=", response.getFileHash());
     }
 
     @Test
     public void validValidatedDocumentReturnedWithoutReportSignature() {
         byte[] data = "testData".getBytes();
         ValidatedDocument response = ReportBuilderUtils.createValidatedDocument(false, "filename.asice", data);
-        Assert.assertEquals("filename.asice", response.getFilename());
-        Assert.assertEquals(null, response.getHashAlgo());
-        Assert.assertEquals(null, response.getFileHash());
+        Assertions.assertEquals("filename.asice", response.getFilename());
+        Assertions.assertEquals(null, response.getHashAlgo());
+        Assertions.assertEquals(null, response.getFileHash());
     }
 }

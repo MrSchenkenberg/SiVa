@@ -18,9 +18,8 @@ package ee.openeid.siva.validation.service.signature.policy;
 
 import ee.openeid.siva.validation.service.signature.policy.properties.ConstraintDefinedPolicy;
 import ee.openeid.siva.validation.service.signature.policy.properties.SignaturePolicyProperties;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -30,7 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static java.util.Arrays.stream;
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class ConstraintLoadingSignaturePolicyServiceTest {
 
@@ -43,22 +42,21 @@ public class ConstraintLoadingSignaturePolicyServiceTest {
     private static final String NON_EXISITNG_CLASSPATH_CONSTRAINT = "non-existing-constraint.xml";
     private static final String NON_EXISITNG_ABSOLUTE_PATH_CONSTRAINT = "/non-existing-constraint.xml";
 
-    @Rule
-    public ExpectedException expectedException = ExpectedException.none();
-
     @Test
     public void whenSignaturePolicesDoNotContainDefaultPolicyThenThrowException() {
-        expectedException.expect(DefaultPolicyNotDefinedException.class);
-        ConstraintDefinedPolicy pol1 = createValidationPolicy("pol1", VALID_CLASSPATH_CONSTRAINT);
-        ConstraintLoadingSignaturePolicyService signaturePolicyService = createSignaturePolicyService("RANDOM_PREFIX" + "pol1", pol1);
-        signaturePolicyService.getPolicy("pol1");
+        Assertions.assertThrows(DefaultPolicyNotDefinedException.class, () -> {
+            ConstraintDefinedPolicy pol1 = createValidationPolicy("pol1", VALID_CLASSPATH_CONSTRAINT);
+            ConstraintLoadingSignaturePolicyService signaturePolicyService = createSignaturePolicyService("RANDOM_PREFIX" + "pol1", pol1);
+            signaturePolicyService.getPolicy("pol1");
+        });
     }
 
     @Test
     public void whenDefaultPolicyReferencesPolicyThatCannotBeLoadedThenThrowException() {
-        expectedException.expect(CannotLoadPolicyReferencedByDefaultPolicyException.class);
-        ConstraintDefinedPolicy pol1 = createValidationPolicy("pol1", INVALID_CLASSPATH_CONSTRAINT);
-        createSignaturePolicyService("pol1", pol1);
+        Assertions.assertThrows(CannotLoadPolicyReferencedByDefaultPolicyException.class, () -> {
+            ConstraintDefinedPolicy pol1 = createValidationPolicy("pol1", INVALID_CLASSPATH_CONSTRAINT);
+            createSignaturePolicyService("pol1", pol1);
+        });
     }
 
     @Test
@@ -144,10 +142,11 @@ public class ConstraintLoadingSignaturePolicyServiceTest {
     }
 
     private void assertPolicyNotLoaded(ConstraintLoadingSignaturePolicyService signaturePolicyService, String notLoadedPolicyName) {
-        expectedException.expect(InvalidPolicyException.class);
-        assertEquals(1, signaturePolicyService.getSignaturePolicies().size());
-        assertNull(signaturePolicyService.getSignaturePolicies().get(notLoadedPolicyName));
-        signaturePolicyService.getPolicy(notLoadedPolicyName);
+        Assertions.assertThrows(InvalidPolicyException.class, () -> {
+            assertEquals(1, signaturePolicyService.getSignaturePolicies().size());
+            assertNull(signaturePolicyService.getSignaturePolicies().get(notLoadedPolicyName));
+            signaturePolicyService.getPolicy(notLoadedPolicyName);
+        });
     }
 
     private static String getResourceAbsolutePath(String resourceRelativePath) {
