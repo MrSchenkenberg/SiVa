@@ -18,15 +18,14 @@ package ee.openeid.tsl.configuration;
 
 
 import eu.europa.esig.dss.spi.x509.revocation.ocsp.OCSPSource;
-import org.junit.Test;
-
-import static org.junit.Assert.assertNull;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 public class AlwaysFailingOCSPSourceTest {
 
     @Test
     public void alwaysFailingOcspSourceShouldReturnNullInsteadOfOcspToken() throws Exception {
         OCSPSource ocspSource = new AlwaysFailingOCSPSource();
-        assertNull(ocspSource.getRevocationToken(null, null));
+        Assertions.assertNull(ocspSource.getRevocationToken(null, null));
     }
 }
