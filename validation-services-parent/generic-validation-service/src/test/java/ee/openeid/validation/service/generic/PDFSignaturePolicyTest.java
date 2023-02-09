@@ -21,13 +21,14 @@ import ee.openeid.siva.validation.document.report.Policy;
 import ee.openeid.siva.validation.document.report.SimpleReport;
 import ee.openeid.siva.validation.document.report.ValidationConclusion;
 import ee.openeid.siva.validation.service.signature.policy.InvalidPolicyException;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 import static ee.openeid.siva.validation.service.signature.policy.PredefinedValidationPolicySource.ADES_POLICY;
 import static ee.openeid.siva.validation.service.signature.policy.PredefinedValidationPolicySource.QES_POLICY;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class PDFSignaturePolicyTest extends PDFValidationServiceTest {
 
@@ -35,7 +36,7 @@ public class PDFSignaturePolicyTest extends PDFValidationServiceTest {
     private static final String PDF_WITH_SOFT_CERT_SIGNATURE = "soft-cert-signature.pdf";
 
     @Test
-    @Ignore //TODO: New test file is needed
+    @Disabled //TODO: New test file is needed
     public void softCertSignatureShouldBeValidWithNoTypePolicy() throws Exception {
         SimpleReport report = validateWithPolicy("POLv3", PDF_WITH_SOFT_CERT_SIGNATURE);
         ValidationConclusion validationConclusion = report.getValidationConclusion();
@@ -43,7 +44,7 @@ public class PDFSignaturePolicyTest extends PDFValidationServiceTest {
     }
 
     @Test
-    @Ignore //TODO: New test file is needed
+    @Disabled //TODO: New test file is needed
     public void softCertSignatureShouldBeInvalidWithQESPolicy() throws Exception {
         SimpleReport report = validateWithPolicy("POLv4", PDF_WITH_SOFT_CERT_SIGNATURE);
         assertTrue(report.getValidationConclusion().getValidSignaturesCount() == 0);
@@ -75,8 +76,9 @@ public class PDFSignaturePolicyTest extends PDFValidationServiceTest {
 
     @Test
     public void whenNonExistingPolicyIsGivenThenValidatorShouldThrowException() throws Exception {
-        expectedException.expect(InvalidPolicyException.class);
-        validateWithPolicy("non-existing-policy");
+        Assertions.assertThrows(InvalidPolicyException.class, () -> {
+            validateWithPolicy("non-existing-policy");
+        });
     }
 
     private SimpleReport validateWithPolicy(String policyName) {
