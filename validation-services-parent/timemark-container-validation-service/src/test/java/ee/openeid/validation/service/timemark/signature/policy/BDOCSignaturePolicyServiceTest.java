@@ -25,21 +25,20 @@ import ee.openeid.siva.validation.service.signature.policy.ConstraintLoadingSign
 import ee.openeid.siva.validation.service.signature.policy.properties.ConstraintDefinedPolicy;
 
 import org.apache.commons.io.IOUtils;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.MockedStatic;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class BDOCSignaturePolicyServiceTest {
 
     private BDOCSignaturePolicyService bdocSignaturePolicyService;
@@ -50,10 +49,7 @@ public class BDOCSignaturePolicyServiceTest {
     @Mock
     private ConstraintDefinedPolicy policy;
 
-    @Rule
-    public ExpectedException expectedException = ExpectedException.none();
-
-    @Before
+    @BeforeEach
     public void setUp() {
         bdocSignaturePolicyService = new BDOCSignaturePolicyService();
         bdocSignaturePolicyService.setSignaturePolicyService(signaturePolicyService);
@@ -61,12 +57,13 @@ public class BDOCSignaturePolicyServiceTest {
 
     @Test
     public void givenInvalidPolicyWillThrowException() {
-        expectedException.expect(BdocPolicyFileCreationException.class);
-        try (MockedStatic<IOUtils> ioUtils = mockStatic(IOUtils.class)) {
-            ioUtils.when(() -> IOUtils.copy(any(InputStream.class), any(OutputStream.class))).thenThrow(new IOException("Copy error"));
-            given(policy.getConstraintDataStream()).willReturn(new ByteArrayInputStream("hello".getBytes()));
-            given(signaturePolicyService.getPolicy(anyString())).willReturn(policy);
-            bdocSignaturePolicyService.getAbsolutePath("random");
-        }
+        Assertions.assertThrows(BdocPolicyFileCreationException.class, () -> {
+            try (MockedStatic<IOUtils> ioUtils = mockStatic(IOUtils.class)) {
+                ioUtils.when(() -> IOUtils.copy(any(InputStream.class), any(OutputStream.class))).thenThrow(new IOException("Copy error"));
+                given(policy.getConstraintDataStream()).willReturn(new ByteArrayInputStream("hello".getBytes()));
+                given(signaturePolicyService.getPolicy(anyString())).willReturn(policy);
+                bdocSignaturePolicyService.getAbsolutePath("random");
+            }
+        });
     }
 }
