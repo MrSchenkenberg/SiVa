@@ -27,32 +27,26 @@ import ee.openeid.siva.validation.document.ValidationDocument;
 import ee.openeid.siva.validation.document.report.Error;
 import ee.openeid.siva.validation.document.report.*;
 import ee.openeid.validation.service.generic.HashcodeGenericValidationService;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.BDDMockito;
 import org.mockito.Mock;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.env.Environment;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 public class HashcodeValidationProxyTest {
-
-    @Rule
-    public ExpectedException exception = ExpectedException.none();
 
     private HashcodeValidationProxy hashcodeValidationProxy;
 
@@ -67,7 +61,7 @@ public class HashcodeValidationProxyTest {
 
     private ValidationServiceSpy validationServiceSpy;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         hashcodeValidationProxy = new HashcodeValidationProxy(statisticsService, applicationContext, environment);
 
@@ -78,13 +72,11 @@ public class HashcodeValidationProxyTest {
     public void applicationContextHasNoBeanWithGivenNameThrowsException() {
         BDDMockito.given(applicationContext.getBean(anyString())).willThrow(new NoSuchBeanDefinitionException("Bean not loaded"));
 
-        exception.expect(ValidatonServiceNotFoundException.class);
-        exception.expectMessage("hashcodeGenericValidationService not found");
-
-        ProxyHashcodeDataSet proxyDocument = mockHashCodeDataSet();
-        hashcodeValidationProxy.validate(proxyDocument);
-
-        verify(applicationContext).getBean(anyString());
+        Assertions.assertThrows(ValidatonServiceNotFoundException.class, () -> {
+            ProxyHashcodeDataSet proxyDocument = mockHashCodeDataSet();
+            hashcodeValidationProxy.validate(proxyDocument);
+            verify(applicationContext).getBean(anyString());
+        }, "hashcodeGenericValidationService not found");
     }
 
     @Test

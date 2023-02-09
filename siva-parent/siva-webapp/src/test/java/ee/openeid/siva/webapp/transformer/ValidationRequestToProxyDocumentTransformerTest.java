@@ -16,32 +16,27 @@
 
 package ee.openeid.siva.webapp.transformer;
 
-import ee.openeid.siva.proxy.document.DocumentType;
 import ee.openeid.siva.proxy.document.ProxyDocument;
 import ee.openeid.siva.proxy.document.ReportType;
 import ee.openeid.siva.proxy.document.typeresolver.UnsupportedTypeException;
 import ee.openeid.siva.testutils.MockValidationRequestBuilder;
 import org.apache.commons.codec.binary.Base64;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class ValidationRequestToProxyDocumentTransformerTest {
-
-    @Rule
-    public ExpectedException expectedException = ExpectedException.none();
 
     private static final String VALID_PDF_FILE = "test-files/sample.pdf";
     private ValidationRequestToProxyDocumentTransformer transformer = new ValidationRequestToProxyDocumentTransformer();
     private MockValidationRequestBuilder.MockValidationRequest validationRequest;
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         setValidPdfValidationRequest();
     }
@@ -67,11 +62,10 @@ public class ValidationRequestToProxyDocumentTransformerTest {
 
     @Test
     public void invalidReportTypeThrowsUnsupportedTypeException() {
-        expectedException.expect(UnsupportedTypeException.class);
-        expectedException.expectMessage("ReportType of type 'INVALID_MISS_TYPED_OR_MISSING_REPORT_TYPE' is not supported");
-
-        validationRequest.setReportType("INVALID_MISS_TYPED_OR_MISSING_REPORT_TYPE");
-        transformer.transform(validationRequest).getReportType();
+        Assertions.assertThrows(UnsupportedTypeException.class, () -> {
+            validationRequest.setReportType("INVALID_MISS_TYPED_OR_MISSING_REPORT_TYPE");
+            transformer.transform(validationRequest).getReportType();
+        }, "ReportType of type 'INVALID_MISS_TYPED_OR_MISSING_REPORT_TYPE' is not supported");
     }
 
     @Test
