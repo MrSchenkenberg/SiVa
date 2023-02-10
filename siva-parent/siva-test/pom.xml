@@ -190,6 +190,11 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-surefire-plugin</artifactId>
+                        <configuration>
+                            <properties>
+                                <includeTags>IntegrationTest</includeTags>
+                            </properties>
+                        </configuration>
                     </plugin>
                     <plugin>
                         <artifactId>maven-failsafe-plugin</artifactId>
