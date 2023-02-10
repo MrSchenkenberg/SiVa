@@ -84,27 +84,27 @@ public class TimeStampTokenValidationServiceTest {
     }
 
     @Test
-    public void multipleDataFile() throws Exception {
+    public void multipleDataFile() {
         Assertions.assertThrows(DocumentRequirementsException.class, () -> {
             validationService.validateDocument(buildValidationDocument("timestamptoken-two-data-files.asics"));
         });
     }
 
     @Test
-    public void notValidTstFile() throws Exception {
+    public void notValidTstFile() {
         Assertions.assertThrows(MalformedDocumentException.class, () -> {
             validationService.validateDocument(buildValidationDocument("timestamptoken-invalid.asics"));
         });
     }
 
     @Test
-    public void dataFiledChanged() throws Exception {
+    public void dataFiledChanged() {
         SimpleReport simpleReport = validationService.validateDocument(buildValidationDocument("timestamptoken-datafile-changed.asics")).getSimpleReport();
         Assertions.assertEquals("Signature not intact", simpleReport.getValidationConclusion().getTimeStampTokens().get(0).getError().get(0).getContent());
     }
 
     @Test
-    public void signatureNotIntact() throws Exception {
+    public void signatureNotIntact() {
         SimpleReport simpleReport = validationService.validateDocument(buildValidationDocument("timestamptoken-signature-modified.asics")).getSimpleReport();
         Assertions.assertEquals("Signature not intact", simpleReport.getValidationConclusion().getTimeStampTokens().get(0).getError().get(0).getContent());
     }

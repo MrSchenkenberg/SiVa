@@ -50,7 +50,7 @@ public class AsiceWithXadesSignatureServiceTest {
     }
 
     @Test
-    public void AsiceSignatureServiceNotConfiguredWithProperties_shouldThrowException() throws IOException {
+    public void AsiceSignatureServiceNotConfiguredWithProperties_shouldThrowException() {
         Assertions.assertThrows(SignatureServiceException.class, () -> {
             asiceSignatureService = new AsiceWithXadesSignatureService(null, new TrustedListsCertificateSource());
             asiceSignatureService.getSignature("Hello".getBytes(), "hello.txt", "application/text");
@@ -58,7 +58,7 @@ public class AsiceWithXadesSignatureServiceTest {
     }
 
     @Test
-    public void AsiceSignatureServiceNotConfiguredWithPkcs12Properties_shouldThrowException() throws IOException {
+    public void AsiceSignatureServiceNotConfiguredWithPkcs12Properties_shouldThrowException() {
         Assertions.assertThrows(SignatureServiceException.class, () -> {
             asiceSignatureService.getProperties().setPkcs12(null);
             asiceSignatureService.getSignature("Hello".getBytes(), "hello.txt", "application/text");
@@ -66,7 +66,7 @@ public class AsiceWithXadesSignatureServiceTest {
     }
 
     @Test
-    public void AsiceSignatureServiceConfiguredWithInvalidPkcs12Keystore_shouldThrowException() throws IOException {
+    public void AsiceSignatureServiceConfiguredWithInvalidPkcs12Keystore_shouldThrowException() {
         Assertions.assertThrows(SignatureServiceException.class, () -> {
             asiceSignatureService.getProperties().getPkcs12().setPath("classpath:invalid.p12");
             asiceSignatureService.getSignature("Hello".getBytes(), "hello.txt", "application/text");
@@ -74,7 +74,7 @@ public class AsiceWithXadesSignatureServiceTest {
     }
 
     @Test
-    public void AsiceSignatureServiceConfiguredWithInvalidPkcs12Password_shouldThrowException() throws IOException {
+    public void AsiceSignatureServiceConfiguredWithInvalidPkcs12Password_shouldThrowException() {
         Assertions.assertThrows(DSSException.class, () -> {
             asiceSignatureService.getProperties().getPkcs12().setPassword("invalid password");
             asiceSignatureService.getSignature("Hello".getBytes(), "hello.txt", "application/text");
@@ -82,7 +82,7 @@ public class AsiceWithXadesSignatureServiceTest {
     }
 
     @Test
-    public void AsiceSignatureServiceConfiguredWithInvalidSignatureLevel_shouldThrowException() throws IOException {
+    public void AsiceSignatureServiceConfiguredWithInvalidSignatureLevel_shouldThrowException() {
         Assertions.assertThrows(SignatureServiceException.class, () -> {
             asiceSignatureService.getProperties().setSignatureLevel("SOME_INVALID_LEVEL");
             asiceSignatureService.getSignature("Hello".getBytes(), "hello.txt", "application/text");

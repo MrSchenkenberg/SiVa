@@ -131,12 +131,12 @@ public class ReportBuilderUtilsTest {
     }
 
     @Test
-    public void givenNullValueWillReturnEmptyString() throws Exception {
+    public void givenNullValueWillReturnEmptyString() {
         assertThat(ReportBuilderUtils.emptyWhenNull(null)).isEqualTo("");
     }
 
     @Test
-    public void givenNotEmptyStringWillReturnItUnchanged() throws Exception {
+    public void givenNotEmptyStringWillReturnItUnchanged() {
         assertThat(ReportBuilderUtils.emptyWhenNull("random")).isEqualTo("random");
     }
 

@@ -41,7 +41,7 @@ public class TSLRefreshConfigurationTest {
     private TSLRefreshConfiguration tslRefreshConfiguration;
 
     @Test
-    public void verifySchedulerCronIsQueriedFromPropertiesWhenCreatingTSLRefreshTask() throws Exception {
+    public void verifySchedulerCronIsQueriedFromPropertiesWhenCreatingTSLRefreshTask() {
         when(properties.getSchedulerCron()).thenReturn(SCHEDULER_CRON);
         tslRefreshConfiguration.tslRefreshTask();
         verify(properties, VerificationModeFactory.times(1)).getSchedulerCron();

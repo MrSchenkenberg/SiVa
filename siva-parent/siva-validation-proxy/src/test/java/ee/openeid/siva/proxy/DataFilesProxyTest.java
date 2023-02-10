@@ -61,7 +61,7 @@ public class DataFilesProxyTest {
     }
 
     @Test
-    public void applicationContextHasNoBeanWithGivenNameThrowsException() throws Exception {
+    public void applicationContextHasNoBeanWithGivenNameThrowsException() {
         given(applicationContext.getBean(anyString())).willThrow(new NoSuchBeanDefinitionException("Bean not loaded"));
 
         Assertions.assertThrows(DataFilesServiceNotFoundException.class, () -> {
@@ -72,7 +72,7 @@ public class DataFilesProxyTest {
     }
 
     @Test
-    public void ProxyDocumentWithDDOCDocumentTypeShouldReturnDataFilesReport() throws Exception {
+    public void ProxyDocumentWithDDOCDocumentTypeShouldReturnDataFilesReport() {
         when(applicationContext.getBean(DDOCDataFilesService.class.getSimpleName())).thenReturn(dataFilesServiceSpy);
 
         ProxyDocument proxyDocument = mockProxyDocumentWithDocument("filename.ddoc");

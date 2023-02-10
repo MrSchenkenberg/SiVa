@@ -35,7 +35,7 @@ public class TSLRefresherTest {
     private TSLRefresher tslRefresher;
 
     @Test
-    public void runningTslRefresherShouldLoadTSL() throws Exception {
+    public void runningTslRefresherShouldLoadTSL() {
         tslRefresher.run();
         verify(tslLoader).loadTSL();
         verifyNoMoreInteractions(tslLoader);

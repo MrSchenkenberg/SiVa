@@ -108,7 +108,7 @@ public class ValidationProxyTest {
     }
 
     @Test
-    public void applicationContextHasNoBeanWithGivenNameThrowsException() throws Exception {
+    public void applicationContextHasNoBeanWithGivenNameThrowsException() {
         BDDMockito.given(applicationContext.getBean(anyString())).willThrow(new NoSuchBeanDefinitionException("Bean not loaded"));
 
         Assertions.assertThrows(ValidatonServiceNotFoundException.class, () -> {
@@ -199,7 +199,7 @@ public class ValidationProxyTest {
     }
 
     @Test
-    public void proxyDocumentAsicsWithTwoDataFiles() throws Exception {
+    public void proxyDocumentAsicsWithTwoDataFiles() {
         Assertions.assertThrows(DocumentRequirementsException.class, () -> {
             when(applicationContext.getBean(TIMESTAMP_TOKEN_VALIDATION_SERVICE_BEAN)).thenReturn(getTimeStampValidationService());
             ProxyDocument proxyDocument = mockProxyDocumentWithExtension("asics");
@@ -229,7 +229,7 @@ public class ValidationProxyTest {
     }
 
     @Test
-    public void removeUnnecessaryWarningsFromValidationConclusion() throws Exception {
+    public void removeUnnecessaryWarningsFromValidationConclusion() {
         ValidationConclusion validationConclusion = new ValidationConclusion();
         ValidationWarning validationWarning = new ValidationWarning();
         validationWarning.setContent(DDOCContainerValidationReportBuilder.DDOC_TIMESTAMP_WARNING);
@@ -335,7 +335,7 @@ public class ValidationProxyTest {
         return proxyDocument;
     }
 
-    private void assertSimpleReport(SimpleReport report) throws IOException {
+    private void assertSimpleReport(SimpleReport report) {
         assertEquals(validationServiceSpy.reports.getSimpleReport(), report);
     }
 

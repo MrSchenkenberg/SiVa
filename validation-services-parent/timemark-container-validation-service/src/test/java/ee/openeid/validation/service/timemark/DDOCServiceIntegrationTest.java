@@ -280,7 +280,7 @@ public class DDOCServiceIntegrationTest {
     }
 
     @Test
-    public void whenNonExistingPolicyIsGivenThenValidatorShouldThrowException() throws Exception {
+    public void whenNonExistingPolicyIsGivenThenValidatorShouldThrowException() {
         Assertions.assertThrows(InvalidPolicyException.class, () -> {
             validateWithPolicy("non-existing-policy");
         });
@@ -361,14 +361,14 @@ public class DDOCServiceIntegrationTest {
         assertEquals(commonName, subjectDistinguishedName.getCommonName());
     }
 
-    private static DataFilesDocument buildDataFilesDocument() throws Exception {
+    private static DataFilesDocument buildDataFilesDocument() {
         return DummyDataFilesDocumentBuilder
                 .aDataFilesDocument()
                 .withDocument(TEST_FILES_LOCATION + VALID_DDOC)
                 .build();
     }
 
-    private static ValidationDocument buildValidationDocument(String testFile) throws Exception {
+    private static ValidationDocument buildValidationDocument(String testFile) {
         return DummyValidationDocumentBuilder
                 .aValidationDocument()
                 .withDocument(TEST_FILES_LOCATION + testFile)
@@ -407,7 +407,7 @@ public class DDOCServiceIntegrationTest {
         }
     }
 
-    private SimpleReport validateWithPolicy(String policyName) throws Exception {
+    private SimpleReport validateWithPolicy(String policyName) {
         ValidationDocument validationDocument = buildValidationDocument(VALID_DDOC_2_SIGNATURES);
         validationDocument.setSignaturePolicy(policyName);
         return timemarkContainerValidationService.validateDocument(validationDocument).getSimpleReport();
